@@ -32,7 +32,8 @@
         "PROMITOR_DISCOVERY_APPSECRET": "_M6e4CNu]x2SSN0hUFobamWttPyVXl?-"
       },
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/docs",
-      "publishAllPorts": true,
+      "publishAllPorts": false,
+      "httpPort": "7777",
       "useSSL": false
     }
   }
