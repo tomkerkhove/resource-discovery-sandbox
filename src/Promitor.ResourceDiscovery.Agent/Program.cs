@@ -29,7 +29,7 @@ namespace Promitor.ResourceDiscovery.Agent
             IConfigurationRoot configuration =
                 new ConfigurationBuilder()
                     .AddCommandLine(args)
-                    .AddEnvironmentVariables()
+                    .AddEnvironmentVariables("PROMITOR")
                     .Build();
 
             return configuration;
