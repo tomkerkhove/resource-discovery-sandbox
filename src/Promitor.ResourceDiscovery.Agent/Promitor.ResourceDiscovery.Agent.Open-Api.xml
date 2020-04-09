@@ -4,6 +4,22 @@
         <name>Promitor.ResourceDiscovery.Agent</name>
     </assembly>
     <members>
+        <member name="T:Promitor.ResourceDiscovery.Agent.Controllers.DiscoveryController">
+            <summary>
+            API endpoint to discover Azure resources
+            </summary>
+        </member>
+        <member name="M:Promitor.ResourceDiscovery.Agent.Controllers.DiscoveryController.#ctor(Promitor.ResourceDiscovery.Agent.AzureResourceGraph)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Promitor.ResourceDiscovery.Agent.Controllers.DiscoveryController"/> class.
+            </summary>
+        </member>
+        <member name="M:Promitor.ResourceDiscovery.Agent.Controllers.DiscoveryController.Get">
+            <summary>
+                Discover Resources
+            </summary>
+            <remarks>Discovers Azure resources matching the criteria.</remarks>
+        </member>
         <member name="T:Promitor.ResourceDiscovery.Agent.Controllers.HealthController">
             <summary>
             API endpoint to check the health of the application.

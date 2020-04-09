@@ -40,6 +40,7 @@ namespace Promitor.ResourceDiscovery.Agent
                 options.LowercaseUrls = true;
                 options.LowercaseQueryStrings = true;
             });
+
             services.AddControllers(options => 
             {
                 options.ReturnHttpNotAcceptable = true;
@@ -52,6 +53,7 @@ namespace Promitor.ResourceDiscovery.Agent
             
             services.AddHealthChecks();
             services.AddCorrelation();
+            services.AddTransient<AzureResourceGraph>();
 
 #if DEBUG
             var openApiInformation = new OpenApiInfo
