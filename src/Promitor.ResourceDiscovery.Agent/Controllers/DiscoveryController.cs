@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GuardNet;
-using Promitor.ResourceDiscovery.Agent.Graph;
+using Promitor.ResourceDiscovery.Agent.Repositories;
 
 namespace Promitor.ResourceDiscovery.Agent.Controllers
 {
@@ -12,16 +12,16 @@ namespace Promitor.ResourceDiscovery.Agent.Controllers
     [Route("api/v1/discovery")]
     public class DiscoveryController : ControllerBase
     {
-        private readonly AzureResourceGraph _azureResourceGraph;
+        private readonly ResourceRepository _resourceRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DiscoveryController"/> class.
         /// </summary>
-        public DiscoveryController(AzureResourceGraph azureResourceGraph)
+        public DiscoveryController(ResourceRepository resourceRepository)
         {
-            Guard.NotNull(azureResourceGraph, nameof(azureResourceGraph));
+            Guard.NotNull(resourceRepository, nameof(resourceRepository));
 
-            _azureResourceGraph = azureResourceGraph;
+            _resourceRepository = resourceRepository;
         }
 
         /// <summary>
@@ -29,9 +29,9 @@ namespace Promitor.ResourceDiscovery.Agent.Controllers
         /// </summary>
         /// <remarks>Discovers Azure resources matching the criteria.</remarks>
         [HttpGet(Name = "Discovery_Get")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(string resourceCollectionName)
         {
-            var foundResources = await _azureResourceGraph.QueryAsync();
+            var foundResources = await _resourceRepository.GetResourcesAsync(resourceCollectionName);
             return Ok(foundResources);
         }
     }

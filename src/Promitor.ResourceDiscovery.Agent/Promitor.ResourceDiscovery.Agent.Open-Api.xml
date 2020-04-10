@@ -9,12 +9,12 @@
             API endpoint to discover Azure resources
             </summary>
         </member>
-        <member name="M:Promitor.ResourceDiscovery.Agent.Controllers.DiscoveryController.#ctor(Promitor.ResourceDiscovery.Agent.Graph.AzureResourceGraph)">
+        <member name="M:Promitor.ResourceDiscovery.Agent.Controllers.DiscoveryController.#ctor(Promitor.ResourceDiscovery.Agent.Repositories.ResourceRepository)">
             <summary>
             Initializes a new instance of the <see cref="T:Promitor.ResourceDiscovery.Agent.Controllers.DiscoveryController"/> class.
             </summary>
         </member>
-        <member name="M:Promitor.ResourceDiscovery.Agent.Controllers.DiscoveryController.Get">
+        <member name="M:Promitor.ResourceDiscovery.Agent.Controllers.DiscoveryController.Get(System.String)">
             <summary>
                 Discover Resources
             </summary>
@@ -38,6 +38,33 @@
             <remarks>Provides an indication about the health of the API.</remarks>
             <response code="200">API is healthy</response>
             <response code="503">API is unhealthy or in degraded state</response>
+        </member>
+        <member name="T:Promitor.ResourceDiscovery.Agent.Controllers.ResourceCollectionsController">
+            <summary>
+            API endpoint to interact with resource collections
+            </summary>
+        </member>
+        <member name="M:Promitor.ResourceDiscovery.Agent.Controllers.ResourceCollectionsController.#ctor(Microsoft.Extensions.Options.IOptionsMonitor{Promitor.ResourceDiscovery.Agent.Configuration.ResourceDeclaration})">
+            <summary>
+                Initializes a new instance of the <see cref="T:Promitor.ResourceDiscovery.Agent.Controllers.DiscoveryController" /> class.
+            </summary>
+        </member>
+        <member name="M:Promitor.ResourceDiscovery.Agent.Controllers.ResourceCollectionsController.Get">
+            <summary>
+                Get Resource Collections
+            </summary>
+            <remarks>Lists all available resource collections.</remarks>
+        </member>
+        <member name="M:Promitor.ResourceDiscovery.Agent.Repositories.ResourceRepository.#ctor(Promitor.ResourceDiscovery.Agent.Graph.AzureResourceGraph,Microsoft.Extensions.Options.IOptionsMonitor{Promitor.ResourceDiscovery.Agent.Configuration.ResourceDeclaration})">
+            <summary>
+                Initializes a new instance of the <see cref="T:Promitor.ResourceDiscovery.Agent.Controllers.DiscoveryController" /> class.
+            </summary>
+        </member>
+        <member name="M:Promitor.ResourceDiscovery.Agent.Repositories.ResourceRepository.GetResourcesAsync(System.String)">
+            <summary>
+                Get resources that are part of a given resource collection
+            </summary>
+            <param name="resourceCollectionName">Name of the resource collection</param>
         </member>
         <member name="M:Promitor.ResourceDiscovery.Agent.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>

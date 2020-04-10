@@ -1,0 +1,5 @@
+resourceCollections:
+- name: service-bus
+  type: microsoft.servicebus/namespaces
+- name: app-services
+  type: microsoft.web/sites

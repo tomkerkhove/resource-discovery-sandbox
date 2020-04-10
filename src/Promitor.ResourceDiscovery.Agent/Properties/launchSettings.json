@@ -27,9 +27,7 @@
       "commandName": "Docker",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "PROMITOR_DISCOVERY_APPID": "67882a00-21d3-4ee7-b32a-430ea0768cd3",
-        "PROMITOR_DISCOVERY_APPSECRET": "_M6e4CNu]x2SSN0hUFobamWttPyVXl?-"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/docs",
       "publishAllPorts": false,

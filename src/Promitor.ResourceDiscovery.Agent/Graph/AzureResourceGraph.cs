@@ -11,28 +11,24 @@ namespace Promitor.ResourceDiscovery.Agent.Graph
     public class AzureResourceGraph
     {
         private readonly IConfiguration _configuration;
+        private ResourceGraphClient _graphClient;
 
         public AzureResourceGraph(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        public async Task<List<Resource>> QueryAsync()
+        public async Task<List<Resource>> QueryAsync(string resourceType)
         {
-            var tenantId = "c8819874-9e56-4e3f-b1a8-1c0325138f27";
+            var graphClient = await GetOrCreateClient();
             var subscriptionId = "0f9d7fea-99e8-4768-8672-06a28514f77e";
-            var appId = _configuration["DISCOVERY_APPID"];
-            var appSecret = _configuration["DISCOVERY_APPSECRET"];
-            var query = GraphQuery.ForResourceType("microsoft.servicebus/namespaces")
+            var query = GraphQuery.ForResourceType(resourceType)
                 .Project("subscriptionId", "resourceGroup", "type", "name", "id")
                 .LimitTo(5)
                 .Build();
 
-            var credentials = await Authentication.GetServiceClientCredentialsAsync("https://management.core.windows.net", appId,appSecret, tenantId);
-            ResourceGraphClient client = new ResourceGraphClient(credentials);
-
             var queryRequest = new QueryRequest(new List<string> {subscriptionId}, query);
-            var response = await client.ResourcesAsync(queryRequest);
+            var response = await graphClient.ResourcesAsync(queryRequest);
             
             var result = response.Data as JObject;
             var rows = result["rows"];
@@ -44,6 +40,26 @@ namespace Promitor.ResourceDiscovery.Agent.Graph
             }
 
             return foundResources;
+        }
+
+        private async Task<ResourceGraphClient> GetOrCreateClient()
+        {
+            if (_graphClient == null)
+            {
+                _graphClient = await CreateClientAsync();
+            }
+
+            return _graphClient;
+        }
+
+        private async Task<ResourceGraphClient> CreateClientAsync()
+        {
+            var tenantId = "c8819874-9e56-4e3f-b1a8-1c0325138f27";
+            var appId = _configuration["DISCOVERY_APPID"];
+            var appSecret = _configuration["DISCOVERY_APPSECRET"];
+
+            var credentials = await Authentication.GetServiceClientCredentialsAsync("https://management.core.windows.net", appId, appSecret, tenantId);
+            return new ResourceGraphClient(credentials);
         }
     }
 }

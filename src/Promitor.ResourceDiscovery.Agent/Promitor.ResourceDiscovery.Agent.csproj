@@ -5,6 +5,8 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>Promitor.ResourceDiscovery.Agent.Open-Api.xml</DocumentationFile>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <UserSecretsId>159d036b-3697-40d4-bdc4-7d9736521375</UserSecretsId>
   </PropertyGroup>
 
 
@@ -19,6 +21,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="Arcus.WebApi.Correlation" Version="0.4.0" />
     <PackageReference Include="Arcus.WebApi.Logging" Version="0.4.0" />
+    <PackageReference Include="NetEscapades.Configuration.Yaml" Version="2.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="5.1.0" />
   </ItemGroup>

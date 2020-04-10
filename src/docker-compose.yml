@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  promitor.agents.resourcediscovery:
+    image: tomkerkhove/promitor-agent-discovery
+    build:
+      context: .
+      dockerfile: Promitor.ResourceDiscovery.Agent/Dockerfile
+    volumes:
+      - "./resource-config.yaml:/config/resource-declaration.yaml"

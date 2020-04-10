@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -29,6 +30,7 @@ namespace Promitor.ResourceDiscovery.Agent
             IConfigurationRoot configuration =
                 new ConfigurationBuilder()
                     .AddCommandLine(args)
+                    .AddYamlFile("/config/resource-declaration.yaml", optional: false, reloadOnChange: true)
                     .AddEnvironmentVariables("PROMITOR_")
                     .Build();
 

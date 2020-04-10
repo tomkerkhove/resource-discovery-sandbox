@@ -11,7 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Arcus.WebApi.Correlation;
+using Promitor.ResourceDiscovery.Agent.Configuration;
 using Promitor.ResourceDiscovery.Agent.Graph;
+using Promitor.ResourceDiscovery.Agent.Repositories;
 
 namespace Promitor.ResourceDiscovery.Agent
 {
@@ -54,7 +56,9 @@ namespace Promitor.ResourceDiscovery.Agent
             
             services.AddHealthChecks();
             services.AddCorrelation();
+            services.Configure<ResourceDeclaration>(Configuration);
             services.AddTransient<AzureResourceGraph>();
+            services.AddTransient<ResourceRepository>();
 
 #if DEBUG
             var openApiInformation = new OpenApiInfo
