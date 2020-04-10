@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Arcus.WebApi.Correlation;
+using Promitor.ResourceDiscovery.Agent.Graph;
 
 namespace Promitor.ResourceDiscovery.Agent
 {

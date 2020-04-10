@@ -9,7 +9,7 @@
             API endpoint to discover Azure resources
             </summary>
         </member>
-        <member name="M:Promitor.ResourceDiscovery.Agent.Controllers.DiscoveryController.#ctor(Promitor.ResourceDiscovery.Agent.AzureResourceGraph)">
+        <member name="M:Promitor.ResourceDiscovery.Agent.Controllers.DiscoveryController.#ctor(Promitor.ResourceDiscovery.Agent.Graph.AzureResourceGraph)">
             <summary>
             Initializes a new instance of the <see cref="T:Promitor.ResourceDiscovery.Agent.Controllers.DiscoveryController"/> class.
             </summary>
