@@ -30,7 +30,7 @@ namespace Promitor.ResourceDiscovery.Agent.Controllers
         /// </summary>
         /// <remarks>Lists all available resource collections.</remarks>
         [HttpGet(Name = "ResourceCollections_Get")]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
             var resourceDeclaration = _resourceDeclarationMonitor.CurrentValue;
             return Ok(resourceDeclaration.ResourceCollections);

@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GuardNet;
 using Microsoft.Azure.Management.ResourceGraph;
 using Microsoft.Azure.Management.ResourceGraph.Models;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
+using Promitor.ResourceDiscovery.Agent.Configuration;
 using Promitor.ResourceDiscovery.Agent.Model;
 
 namespace Promitor.ResourceDiscovery.Agent.Graph
@@ -18,15 +20,27 @@ namespace Promitor.ResourceDiscovery.Agent.Graph
             _configuration = configuration;
         }
 
-        public async Task<List<Resource>> QueryAsync(string resourceType)
+        public async Task<List<Resource>> QueryAsync(string resourceType, ResourceCriteria criteria)
         {
+            Guard.NotNullOrWhitespace(resourceType,nameof(resourceType));
+            Guard.NotNull(criteria, nameof(criteria));
+            Guard.NotNull(criteria.Subscriptions, nameof(criteria.Subscriptions));
+            Guard.NotNull(criteria.Regions, nameof(criteria.Regions));
+            Guard.NotNull(criteria.ResourceGroups, nameof(criteria.ResourceGroups));
+            Guard.NotNull(criteria.Tags, nameof(criteria.Tags));
+
             var graphClient = await GetOrCreateClient();
             var subscriptionId = "0f9d7fea-99e8-4768-8672-06a28514f77e";
             var query = GraphQuery.ForResourceType(resourceType)
+                .WithSubscriptionsWithIds(criteria.Subscriptions)
+                .WithResourceGroupsWithName(criteria.ResourceGroups)
+                .WithinRegions(criteria.Regions)
+                .WithTags(criteria.Tags)
                 .Project("subscriptionId", "resourceGroup", "type", "name", "id")
                 .LimitTo(5)
                 .Build();
 
+            // TODO: Call correct subscriptions
             var queryRequest = new QueryRequest(new List<string> {subscriptionId}, query);
             var response = await graphClient.ResourcesAsync(queryRequest);
             
