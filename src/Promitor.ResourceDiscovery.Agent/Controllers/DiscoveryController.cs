@@ -9,7 +9,7 @@ namespace Promitor.ResourceDiscovery.Agent.Controllers
     /// API endpoint to discover Azure resources
     /// </summary>
     [ApiController]
-    [Route("api/v1/discovery")]
+    [Route("api/v1/resources/collections")]
     public class DiscoveryController : ControllerBase
     {
         private readonly ResourceRepository _resourceRepository;
@@ -28,7 +28,7 @@ namespace Promitor.ResourceDiscovery.Agent.Controllers
         ///     Discover Resources
         /// </summary>
         /// <remarks>Discovers Azure resources matching the criteria.</remarks>
-        [HttpGet(Name = "Discovery_Get")]
+        [HttpGet("{resourceCollectionName}/discovery", Name = "Discovery_Get")]
         public async Task<IActionResult> Get(string resourceCollectionName)
         {
             var foundResources = await _resourceRepository.GetResourcesAsync(resourceCollectionName);
