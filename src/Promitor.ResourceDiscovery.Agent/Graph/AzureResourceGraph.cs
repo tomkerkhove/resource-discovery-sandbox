@@ -31,7 +31,7 @@ namespace Promitor.ResourceDiscovery.Agent.Graph
 
             var graphClient = await GetOrCreateClient();
             var query = GraphQuery.ForResourceType(resourceType)
-                .WithSubscriptionsWithIds(criteria.Subscriptions)
+                .WithSubscriptionsWithIds(criteria.Subscriptions) // Not required but better safe than sorry
                 .WithResourceGroupsWithName(criteria.ResourceGroups)
                 .WithinRegions(criteria.Regions)
                 .WithTags(criteria.Tags)
