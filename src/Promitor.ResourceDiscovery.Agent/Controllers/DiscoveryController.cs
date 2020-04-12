@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GuardNet;
+using Microsoft.VisualBasic;
 using Promitor.ResourceDiscovery.Agent.Repositories;
 
 namespace Promitor.ResourceDiscovery.Agent.Controllers
@@ -32,6 +33,11 @@ namespace Promitor.ResourceDiscovery.Agent.Controllers
         public async Task<IActionResult> Get(string resourceCollectionName)
         {
             var foundResources = await _resourceRepository.GetResourcesAsync(resourceCollectionName);
+            if (foundResources == null)
+            {
+                return NotFound(new { Information = "No resource collection was found with specified name" });
+            }
+
             return Ok(foundResources);
         }
     }
