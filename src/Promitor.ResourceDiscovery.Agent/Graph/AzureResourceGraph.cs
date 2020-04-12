@@ -30,7 +30,6 @@ namespace Promitor.ResourceDiscovery.Agent.Graph
             Guard.NotNull(criteria.Tags, nameof(criteria.Tags));
 
             var graphClient = await GetOrCreateClient();
-            var subscriptionId = "0f9d7fea-99e8-4768-8672-06a28514f77e";
             var query = GraphQuery.ForResourceType(resourceType)
                 .WithSubscriptionsWithIds(criteria.Subscriptions)
                 .WithResourceGroupsWithName(criteria.ResourceGroups)
@@ -40,8 +39,7 @@ namespace Promitor.ResourceDiscovery.Agent.Graph
                 .LimitTo(5)
                 .Build();
 
-            // TODO: Call correct subscriptions
-            var queryRequest = new QueryRequest(new List<string> {subscriptionId}, query);
+            var queryRequest = new QueryRequest(criteria.Subscriptions, query);
             var response = await graphClient.ResourcesAsync(queryRequest);
             
             var result = response.Data as JObject;
