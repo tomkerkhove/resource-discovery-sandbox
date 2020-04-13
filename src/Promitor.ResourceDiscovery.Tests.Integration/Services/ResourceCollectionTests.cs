@@ -5,18 +5,24 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Promitor.ResourceDiscovery.Agent.Configuration;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Promitor.ResourceDiscovery.Tests.Integration.Services
 {
     [Category("Integration")]
-    public class ResourceCollectionTests
+    public class ResourceCollectionTests : IntegrationTest
     {
+        public ResourceCollectionTests(ITestOutputHelper testOutput)
+          : base(testOutput)
+        {
+        }
+
         [Fact]
         public async Task ResourceCollection_GetAll_ReturnsValidList()
         {
             // Arrange
-            var resourceDiscoveryClient = new ResourceDiscoveryClient();
-            
+            var resourceDiscoveryClient = new ResourceDiscoveryClient(Configuration, Logger);
+
             // Act
             var response = await resourceDiscoveryClient.GetResourceCollectionsAsync();
 

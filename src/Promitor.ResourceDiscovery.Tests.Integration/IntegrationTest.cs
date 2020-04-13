@@ -1,0 +1,24 @@
+﻿using Microsoft.Extensions.Configuration;
+using Promitor.ResourceDiscovery.Tests.Integration.Logging;
+using Xunit.Abstractions;
+
+namespace Promitor.ResourceDiscovery.Tests.Integration
+{
+    public class IntegrationTest
+    {
+        protected IConfiguration Configuration { get; }
+        protected XunitTestLogger Logger { get; }
+
+        public IntegrationTest(ITestOutputHelper testOutput)
+        {
+            Logger = new XunitTestLogger(testOutput);
+
+            // The appsettings.local.json allows users to override (gitignored) settings locally for testing purposes
+            Configuration = new ConfigurationBuilder()
+                .AddJsonFile(path: "appsettings.json")
+                .AddJsonFile(path: "appsettings.local.json", optional: true)
+                .AddEnvironmentVariables()
+                .Build();
+        }
+    }
+}
