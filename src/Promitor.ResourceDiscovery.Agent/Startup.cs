@@ -60,7 +60,6 @@ namespace Promitor.ResourceDiscovery.Agent
             services.AddTransient<AzureResourceGraph>();
             services.AddTransient<ResourceRepository>();
 
-#if DEBUG
             var openApiInformation = new OpenApiInfo
             {
                 Title = ApiName,
@@ -75,7 +74,6 @@ namespace Promitor.ResourceDiscovery.Agent
                 swaggerGenerationOptions.OperationFilter<AddHeaderOperationFilter>("X-Transaction-Id", "Transaction ID is used to correlate multiple operation calls. A new transaction ID will be generated if not specified.", false);
                 swaggerGenerationOptions.OperationFilter<AddResponseHeadersFilter>();
             });
-#endif
         }
 
         private static void RestrictToJsonContentType(MvcOptions options)
