@@ -1,0 +1,83 @@
+trigger:
+- master
+
+pr:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - src/*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+- name: DotNet.Version
+  value : 3.1.201
+- name: Agent.Auth.AppId
+  value : 67882a00-21d3-4ee7-b32a-430ea0768cd3
+- name: Agent.Auth.AppSecret
+  value : _M6e4CNu]x2SSN0hUFobamWttPyVXl?-
+- name: Image.Name
+  value : promitor-discovery-agent
+- name: Container.Port
+  value : 8888
+- name: Agent.ResourceDiscovery.BaseUrl
+  value: http://localhost:$(Container.Port)
+
+steps:
+- task: UseDotNet@2
+  displayName: Install .NET Core SDK $(DotNet.Version)
+  inputs:
+    packageType: 'sdk'
+    version: '$(DotNet.Version)'
+- task: DotNetCoreCLI@2
+  displayName: Build Integration Tests
+  inputs:
+    command: 'build'
+    projects: './src/Promitor.ResourceDiscovery.Tests.Integration/Promitor.ResourceDiscovery.Tests.Integration.csproj'
+    arguments: '--configuration release'
+- task: replacetokens@3
+  displayName: Replace Tokens in Integration Test Configuration
+  inputs:
+    rootDirectory: './src'
+    targetFiles: '**/appsettings.json'
+    encoding: 'auto'
+    writeBOM: true
+    verbosity: 'detailed'
+    actionOnMissing: 'fail'
+    keepToken: false
+    tokenPrefix: '#{'
+    tokenSuffix: '}#'
+- task: Docker@2
+  displayName: Build promitor-discovery-agent Docker image
+  inputs:
+    repository: '$(Image.Name)'
+    command: 'build'
+    Dockerfile: './src/Promitor.ResourceDiscovery.Agent/Dockerfile'
+    buildContext: './src/'
+    tags: '$(Build.BuildNumber)'
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      docker run -d -p $(Container.Port):80 --name $(Image.Name) --env DISCOVERY_APPID='$(Agent.Auth.AppId)' --env DISCOVERY_APPSECRET='$(Agent.Auth.AppSecret)' --volume $(Pipeline.Workspace)/s/tests/:/config/ $(Image.Name):$(Build.BuildNumber)
+      sleep 10
+      docker logs promitor-discovery-agent
+    failOnStderr: true
+  displayName: Run promitor-discovery-agent Docker image
+- task: DotNetCoreCLI@2
+  displayName: Run Integration Tests
+  inputs:
+    command: 'test'
+    projects: './src/Promitor.ResourceDiscovery.Tests.Integration/Promitor.ResourceDiscovery.Tests.Integration.csproj'
+    arguments: '--configuration release --no-build'
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      docker logs promitor-discovery-agent
+    failOnStderr: true
+  displayName: Show promitor-discovery-agent logs
+  condition: always()
