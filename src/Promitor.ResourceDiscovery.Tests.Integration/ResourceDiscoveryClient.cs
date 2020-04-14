@@ -31,5 +31,10 @@ namespace Promitor.ResourceDiscovery.Tests.Integration
         {
             return await _httpClient.GetAsync("/api/v1/resources/collections");
         }
+
+        public async Task<HttpResponseMessage> GetHealthAsync()
+        {
+            return await _httpClient.GetAsync("/api/v1/health");
+        }
     }
 }
