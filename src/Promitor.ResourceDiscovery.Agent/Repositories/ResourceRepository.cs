@@ -35,8 +35,12 @@ namespace Promitor.ResourceDiscovery.Agent.Repositories
         public async Task<List<Resource>> GetResourcesAsync(string resourceCollectionName)
         {
             var resourceDeclaration = _resourceDeclarationMonitor.CurrentValue;
-            var resourceCollectionDefinition = resourceDeclaration.ResourceCollections.SingleOrDefault(coll =>
-                coll.Name.Equals(resourceCollectionName, StringComparison.InvariantCultureIgnoreCase));
+            var resourceCollectionDefinition = resourceDeclaration.ResourceCollections.SingleOrDefault(collection => collection.Name.Equals(resourceCollectionName, StringComparison.InvariantCultureIgnoreCase));
+            if (resourceCollectionDefinition == null)
+            {
+                // No collection found so nothing to return
+                return null;
+            }
 
             var foundResources = await _azureResourceGraph.QueryAsync(resourceCollectionDefinition.Type, resourceCollectionDefinition.Criteria);
             return foundResources;

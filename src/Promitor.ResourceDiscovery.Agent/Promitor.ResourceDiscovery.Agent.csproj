@@ -12,6 +12,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="Arcus.Observability.Telemetry.Core" Version="0.1.0-preview-7" />
     <PackageReference Include="Guard.NET" Version="1.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />

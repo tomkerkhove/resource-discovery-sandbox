@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GuardNet;
@@ -29,12 +30,30 @@ namespace Promitor.ResourceDiscovery.Tests.Integration
 
         public async Task<HttpResponseMessage> GetResourceCollectionsAsync()
         {
-            return await _httpClient.GetAsync("/api/v1/resources/collections");
+            return await GetAsync("/api/v1/resources/collections");
         }
 
         public async Task<HttpResponseMessage> GetHealthAsync()
         {
-            return await _httpClient.GetAsync("/api/v1/health");
+            return await GetAsync("/api/v1/health");
+        }
+
+        public async Task<HttpResponseMessage> GetDiscoveredResourcesAsync(string resourceCollectionName)
+        {
+            return await GetAsync($"/api/v1/resources/collections/{resourceCollectionName}/discovery");
+        }
+
+        private async Task<HttpResponseMessage> GetAsync(string uri)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+
+            var stopwatch = Stopwatch.StartNew();
+            var response = await _httpClient.SendAsync(request);
+            stopwatch.Stop();
+
+            _logger.LogRequest(request, response, stopwatch.Elapsed);
+
+            return response;
         }
     }
 }
