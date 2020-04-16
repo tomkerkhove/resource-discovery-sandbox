@@ -51,7 +51,6 @@ namespace Promitor.ResourceDiscovery.Agent
 
                 RestrictToJsonContentType(options);
                 AddEnumAsStringRepresentation(options);
-
             });
             
             services.AddHealthChecks();

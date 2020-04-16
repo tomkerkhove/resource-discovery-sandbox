@@ -4,6 +4,7 @@ using GuardNet;
 using Microsoft.Azure.Management.ResourceGraph;
 using Microsoft.Azure.Management.ResourceGraph.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using Promitor.ResourceDiscovery.Agent.Configuration;
 using Promitor.ResourceDiscovery.Agent.Model;
@@ -12,11 +13,21 @@ namespace Promitor.ResourceDiscovery.Agent.Graph
 {
     public class AzureResourceGraph
     {
+        private readonly IOptionsMonitor<ResourceDeclaration> _resourceDeclarationMonitor;
         private readonly IConfiguration _configuration;
         private ResourceGraphClient _graphClient;
 
-        public AzureResourceGraph(IConfiguration configuration)
+        public string TenantId => _resourceDeclarationMonitor.CurrentValue?.AzureLandscape?.TenantId;
+        public List<string> Subscriptions => _resourceDeclarationMonitor.CurrentValue?.AzureLandscape?.Subscriptions;
+
+        public AzureResourceGraph(IOptionsMonitor<ResourceDeclaration> resourceDeclarationMonitor, IConfiguration configuration)
         {
+            Guard.NotNull(resourceDeclarationMonitor, nameof(resourceDeclarationMonitor));
+            Guard.NotNull(resourceDeclarationMonitor.CurrentValue, nameof(resourceDeclarationMonitor.CurrentValue));
+            Guard.NotNull(resourceDeclarationMonitor.CurrentValue.AzureLandscape, nameof(resourceDeclarationMonitor.CurrentValue.AzureLandscape));
+            Guard.NotNull(configuration, nameof(configuration));
+
+            _resourceDeclarationMonitor = resourceDeclarationMonitor;
             _configuration = configuration;
         }
 
@@ -39,7 +50,7 @@ namespace Promitor.ResourceDiscovery.Agent.Graph
                 .LimitTo(5)
                 .Build();
 
-            var queryRequest = new QueryRequest(criteria.Subscriptions, query);
+            var queryRequest = new QueryRequest(Subscriptions, query);
             var response = await graphClient.ResourcesAsync(queryRequest);
             
             var result = response.Data as JObject;
@@ -66,11 +77,10 @@ namespace Promitor.ResourceDiscovery.Agent.Graph
 
         private async Task<ResourceGraphClient> CreateClientAsync()
         {
-            var tenantId = "c8819874-9e56-4e3f-b1a8-1c0325138f27";
             var appId = _configuration["DISCOVERY_APPID"];
             var appSecret = _configuration["DISCOVERY_APPSECRET"];
 
-            var credentials = await Authentication.GetServiceClientCredentialsAsync("https://management.core.windows.net", appId, appSecret, tenantId);
+            var credentials = await Authentication.GetServiceClientCredentialsAsync("https://management.core.windows.net", appId, appSecret, TenantId);
             return new ResourceGraphClient(credentials);
         }
     }

@@ -7,4 +7,4 @@ services:
       context: .
       dockerfile: Promitor.ResourceDiscovery.Agent/Dockerfile
     volumes:
-      - "./resource-config.yaml:/config/resource-declaration.yaml"
+      - "./../tests/discovery-config.yaml:/config/resource-declaration.yaml"
