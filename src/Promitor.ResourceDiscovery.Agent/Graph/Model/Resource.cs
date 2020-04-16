@@ -1,4 +1,4 @@
-﻿namespace Promitor.ResourceDiscovery.Agent.Model
+﻿namespace Promitor.ResourceDiscovery.Agent.Graph.Model
 {
     public class Resource
     {

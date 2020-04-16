@@ -4,7 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Bogus;
 using Newtonsoft.Json;
-using Promitor.ResourceDiscovery.Agent.Model;
+using Promitor.ResourceDiscovery.Agent.Graph.Model;
 using Xunit;
 using Xunit.Abstractions;
 

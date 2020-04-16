@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using Promitor.ResourceDiscovery.Agent.Configuration;
 using Promitor.ResourceDiscovery.Agent.Graph.Exceptions;
-using Promitor.ResourceDiscovery.Agent.Model;
+using Promitor.ResourceDiscovery.Agent.Graph.Model;
 
 namespace Promitor.ResourceDiscovery.Agent.Graph
 {

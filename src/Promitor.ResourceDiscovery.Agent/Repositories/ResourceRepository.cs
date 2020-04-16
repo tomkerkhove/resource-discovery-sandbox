@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 using Promitor.ResourceDiscovery.Agent.Configuration;
 using Promitor.ResourceDiscovery.Agent.Controllers;
 using Promitor.ResourceDiscovery.Agent.Graph;
-using Promitor.ResourceDiscovery.Agent.Model;
+using Promitor.ResourceDiscovery.Agent.Graph.Model;
 
 namespace Promitor.ResourceDiscovery.Agent.Repositories
 {
