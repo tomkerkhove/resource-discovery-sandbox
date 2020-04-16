@@ -35,7 +35,7 @@ namespace Promitor.ResourceDiscovery.Tests.Integration.Services
         }
 
         [Fact]
-        public async Task ResourceDiscovery_GetAllForOneResourceTypeWithoutFilters_ReturnsExpectedAmount()
+        public async Task ResourceDiscovery_GetAllPerResourceTypeWithoutFilters_ReturnsExpectedAmount()
         {
             // Arrange
             const string resourceCollectionName = "no-filter";
