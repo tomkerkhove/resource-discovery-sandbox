@@ -42,12 +42,11 @@ namespace Promitor.ResourceDiscovery.Agent.Graph
 
             var graphClient = await GetOrCreateClient();
             var query = GraphQuery.ForResourceType(resourceType)
-                .WithSubscriptionsWithIds(criteria.Subscriptions) // Not required but better safe than sorry
+                .WithSubscriptionsWithIds(criteria.Subscriptions) // Filter on queried subscriptions defined in landscape
                 .WithResourceGroupsWithName(criteria.ResourceGroups)
                 .WithinRegions(criteria.Regions)
                 .WithTags(criteria.Tags)
                 .Project("subscriptionId", "resourceGroup", "type", "name", "id")
-                .LimitTo(5)
                 .Build();
 
             var queryRequest = new QueryRequest(Subscriptions, query);
