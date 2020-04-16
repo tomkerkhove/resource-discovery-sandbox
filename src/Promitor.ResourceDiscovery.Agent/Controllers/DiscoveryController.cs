@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GuardNet;
-using Microsoft.VisualBasic;
 using Promitor.ResourceDiscovery.Agent.Repositories;
 
 namespace Promitor.ResourceDiscovery.Agent.Controllers

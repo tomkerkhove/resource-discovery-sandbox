@@ -11,8 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Arcus.WebApi.Correlation;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Promitor.ResourceDiscovery.Agent.Configuration;
 using Promitor.ResourceDiscovery.Agent.Graph;
+using Promitor.ResourceDiscovery.Agent.Health;
 using Promitor.ResourceDiscovery.Agent.Repositories;
 
 namespace Promitor.ResourceDiscovery.Agent
@@ -44,7 +46,7 @@ namespace Promitor.ResourceDiscovery.Agent
                 options.LowercaseQueryStrings = true;
             });
 
-            services.AddControllers(options => 
+            services.AddControllers(options =>
             {
                 options.ReturnHttpNotAcceptable = true;
                 options.RespectBrowserAcceptHeader = true;
@@ -52,8 +54,9 @@ namespace Promitor.ResourceDiscovery.Agent
                 RestrictToJsonContentType(options);
                 AddEnumAsStringRepresentation(options);
             });
-            
-            services.AddHealthChecks();
+
+            services.AddHealthChecks()
+                .AddCheck<AzureResourceGraphHealthCheck>("azure-resource-graph", failureStatus: HealthStatus.Unhealthy);
             services.AddCorrelation();
             services.Configure<ResourceDeclaration>(Configuration);
             services.AddTransient<AzureResourceGraph>();
@@ -94,7 +97,7 @@ namespace Promitor.ResourceDiscovery.Agent
             {
                 inputFormatter.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
             }
-            
+
             var onlyJsonOutputFormatters = options.OutputFormatters.OfType<SystemTextJsonOutputFormatter>();
             foreach (SystemTextJsonOutputFormatter outputFormatter in onlyJsonOutputFormatters)
             {
